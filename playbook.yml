@@ -1,0 +1,8 @@
+---
+- name: set up NTP on all servers.
+  hosts: all
+  become: yes
+  tasks:
+    - name: Ensure NTP is installed
+      yum: name=chrony state=present
+    - service: name=chronyd state=started enabled=yes
