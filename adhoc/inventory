@@ -1,0 +1,15 @@
+#app
+[app]
+10.40.1.191
+10.40.1.192
+
+[db]
+10.40.1.193
+
+[multi:children]
+app
+db
+
+[multi:vars]
+ansible_user=jason
+ansible_private_key_file=~/.ssh/nguyenthdat.com
