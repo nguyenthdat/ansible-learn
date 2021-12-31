@@ -78,3 +78,11 @@ ansible multi -b -m shell -a "tail /var/log/messages | grep ansible-command | wc
 
 # Manage cron jobs
 ansible multi -b -m cron -a "name='daily-cron-all-servers' hour=4 job='/path/to/daily-script.sh'"
+# Remove cron jobs
+ansible multi -b -m cron -a "name='daily-cron-all-servers' state=absent"
+
+
+
+# Deploy a version-controlled application
+ansible app -b -m git -a "repo=git://example.com/path/to/repo.git dest=/opt/myapp update=yes version=1.2.4"
+ansible app -b -a "/opt/myapp/update.sh"
