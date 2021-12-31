@@ -13,3 +13,28 @@ ansible db -b -m service -a "name=firewalld state=started enabled=yes"
 ansible db -b -m firewalld -a "zone=database state=present permanent=yes"
 ansible db -b -m firewalld -a "source=10.40.1.0/24 zone=database state=enabled permanent=yes"
 ansible db -b -m firewalld -a "port=3306/tcp zone=database state=enabled permanent=yes"
+
+
+
+
+ansible db -b -m yum -a "name=python3-PyMySQL state=present"
+ansible db -b -m mysql_user -a "name=django host=% password=12345 priv=*.*:ALL state=present"
+
+
+
+ansible app -b -a "systemctl status chronyd"
+ansible app -b -a "service chronyd restart" --limit "10.40.1.191"
+
+
+# Limit hosts with a simple pattern (asterisk is a wildcard).
+ansible app -b -a "service chronyd restart" --limit "*.191"
+
+
+# Limit hosts with a regular expression (prefix with a tilde).
+ansible app -b -a "service chronyd restart" --limit ~".*\.4"
+
+
+# Manage users and groups
+ansible app -b -m group -a "name=wheel state=present"
+ansible app -b -m user -a "name=hacker group=wheel createhome=yes"
+ansible app -b -m user -a "name=hacker state=absent remove=yes" # remove user
