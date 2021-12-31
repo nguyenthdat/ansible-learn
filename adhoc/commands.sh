@@ -50,3 +50,31 @@ ansible multi -m copy -a "src=ansible-learn/adhoc dest=/tmp/test"
 
 # Retrieve a file from the servers
 ansible multi -b -m fetch -a "src=/etc/hosts dest=/tmp"
+
+
+
+
+# Create directories and files
+ansible multi -m file -a "dest=/tmp/test mode=644 state=directory"
+
+# Here’s how to create a symlink (set state=link)
+ansible multi -m file -a "src=/tmp/test dest=/tmp/testlink state=link"
+
+# Delete directories and files
+ansible multi -b -m file -a "dest=/tmp/test state=absent"
+
+
+
+# Update servers asynchronously with asynchronous jobs
+ansible multi -b -B 3600 -P 0 -a "yum -y update"
+ansible multi -b -m async_status -a "jid=71424399764.20686" # track backgroud jobs using jid
+
+
+
+# Check log files
+ansible multi -b -a "tail /var/log/messages"
+ansible multi -b -m shell -a "tail /var/log/messages | grep ansible-command | wc -l"
+
+
+# Manage cron jobs
+ansible multi -b -m cron -a "name='daily-cron-all-servers' hour=4 job='/path/to/daily-script.sh'"
