@@ -38,3 +38,15 @@ ansible app -b -a "service chronyd restart" --limit ~".*\.4"
 ansible app -b -m group -a "name=wheel state=present"
 ansible app -b -m user -a "name=hacker group=wheel createhome=yes"
 ansible app -b -m user -a "name=hacker state=absent remove=yes" # remove user
+
+
+# Manage packages
+ansible app -b -m package -a "name=git state=present"
+
+# Get information about a file
+ansible multi -m stat -a "path=/etc/environment"
+ansible multi -m copy -a "src=ansible-learn/adhoc dest=/tmp/test"
+
+
+# Retrieve a file from the servers
+ansible multi -b -m fetch -a "src=/etc/hosts dest=/tmp"
